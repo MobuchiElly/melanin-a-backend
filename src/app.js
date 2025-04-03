@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
 app.use("/api/v2/auth", authRouter);
-app.use("/api/v2/blogs", blogRouter);
+app.use("/api/v2/blog", blogRouter);
 app.use("/api/v2/comments", authmiddleware, commentRouter);
 app.use("/api/v2/mail", mailRouter);
 

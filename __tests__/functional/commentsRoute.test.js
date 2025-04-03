@@ -23,7 +23,7 @@ before(async function(){
     ]);
     adminAuthToken = adminRes.body.token;
     userToken = userRes.body.token;
-    const postRes = await chai.request(server).post("/api/v2/blogs").set("authorization", `Bearer ${adminAuthToken}`).send({ "title": "testing",
+    const postRes = await chai.request(server).post("/api/v2/blog").set("authorization", `Bearer ${adminAuthToken}`).send({ "title": "testing",
         "content": "testing",
         "tags": "testtag",
         "image": "testurl" 
@@ -347,7 +347,7 @@ describe("Testing COMMENT Endpoints", () => {
 
 after(async function(){
     try{
-        const res = await chai.request(server).delete(`/api/v2/blogs/${postId}`).set("authorization", `Bearer ${adminAuthToken}`);
+        const res = await chai.request(server).delete(`/api/v2/blog/${postId}`).set("authorization", `Bearer ${adminAuthToken}`);
     } catch(err){
         console.error(err);
     }

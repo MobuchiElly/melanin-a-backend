@@ -30,7 +30,7 @@ describe("Testing Blog Endpoints", () => {
     let blogPostId = "";
     describe("Testing GET ALL BLOGPOSTS", () => {
         it("should return all blog posts with 200 response", async function() {
-            const res = await chai.request(server).get("/api/v2/blogs");
+            const res = await chai.request(server).get("/api/v2/blog");
             expect(res.status).to.equal(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property("data").that.is.an("array");
@@ -47,7 +47,7 @@ describe("Testing Blog Endpoints", () => {
         });
         it("should return all blog posts that match the given title", async function() {
             const test_title = "Building a URL Shortener Microservice API";
-            const res = await chai.request(server).get(`/api/v2/blogs?title=${test_title}`);
+            const res = await chai.request(server).get(`/api/v2/blog?title=${test_title}`);
             expect(res.status).to.equal(200);
             expect(res.body).to.be.an("object");
             expect(res.body).to.have.property("data").that.is.an("array");
@@ -58,7 +58,7 @@ describe("Testing Blog Endpoints", () => {
         });
         it("should return posts that match the given tag", async function() {
             const test_tag = "angular";
-            const res = await chai.request(server).get("/api/v2/blogs?tags=angular,frontend");
+            const res = await chai.request(server).get("/api/v2/blog?tags=angular,frontend");
             expect(res.status).to.equal(200);
             expect(res.body.data).to.be.an("array");
             res.body.data.forEach(post => {
@@ -68,7 +68,7 @@ describe("Testing Blog Endpoints", () => {
         it("should return posts within the given startDate and endDate range", async function() {
             const startDate = "2024-01-01";
             const endDate = "2025-03-25";
-            const res = await chai.request(server).get(`/api/v2/blogs?startDate=${startDate}&endDate=${endDate}`);
+            const res = await chai.request(server).get(`/api/v2/blog?startDate=${startDate}&endDate=${endDate}`);
             expect(res.status).to.equal(200);
             expect(res.body.data).to.be.an("array");
             res.body.data.forEach(post => {
@@ -78,7 +78,7 @@ describe("Testing Blog Endpoints", () => {
             });
         });
         it("should return posts sorted by createdAt", async function() {
-            const res = await chai.request(server).get("/api/v2/blogs?sort=createdAt");
+            const res = await chai.request(server).get("/api/v2/blog?sort=createdAt");
             expect(res.status).to.equal(200);
             expect(res.body.data).to.be.an("array");
             for (let i = 0; i < res.body.data.length - 1; i++) {
@@ -86,7 +86,7 @@ describe("Testing Blog Endpoints", () => {
             }
         });
         it("should return posts sorted by updatedAt", async function() {
-            const res = await chai.request(server).get("/api/v2/blogs?sort=updatedAt");
+            const res = await chai.request(server).get("/api/v2/blog?sort=updatedAt");
             expect(res.status).to.equal(200);
             expect(res.body.data).to.be.an("array");
             for (let i = 0; i < res.body.data.length - 1; i++) {
@@ -95,7 +95,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should return posts with only selected fields", async function() {
-            const res = await chai.request(server).get("/api/v2/blogs?select=title,content");
+            const res = await chai.request(server).get("/api/v2/blog?select=title,content");
             expect(res.status).to.equal(200);
             expect(res.body.data).to.be.an("array");
             res.body.data.forEach((post) => {
@@ -116,7 +116,7 @@ describe("Testing Blog Endpoints", () => {
         };
     
         it("should create new blog post with required fields, valid authentication and access role provided", async function(){
-            const res = await chai.request(server).post("/api/v2/blogs").set("authorization", `Bearer ${adminAuthToken}`).send(postBody);
+            const res = await chai.request(server).post("/api/v2/blog").set("authorization", `Bearer ${adminAuthToken}`).send(postBody);
             blogPostId = res.body.post._id;
             
             expect(res.status).to.equal(201);
@@ -132,7 +132,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should return error if required fields are missing", async function(){
-            const res = await chai.request(server).post("/api/v2/blogs").set("authorization", `Bearer ${adminAuthToken}`).send({});
+            const res = await chai.request(server).post("/api/v2/blog").set("authorization", `Bearer ${adminAuthToken}`).send({});
             
             expect(res.status).to.equal(400);
             expect(res.body).to.have.property("error");
@@ -140,7 +140,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should return authentication error if authentication token is not provided", async function(){
-            const res = await chai.request(server).post("/api/v2/blogs").send(postBody);
+            const res = await chai.request(server).post("/api/v2/blog").send(postBody);
             
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
@@ -148,7 +148,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should return authentication error if authentication token is not valid", async function(){
-            const res = await chai.request(server).post("/api/v2/blogs").set("authorization", `Bearer 5463g3gt7483yrgr748h`).send(postBody);
+            const res = await chai.request(server).post("/api/v2/blog").set("authorization", `Bearer 5463g3gt7483yrgr748h`).send(postBody);
             
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
@@ -156,7 +156,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should return authorisation error if user does not have access previlege", async function(){
-            const res = await chai.request(server).post("/api/v2/blogs").set("authorization", `Bearer ${userAuthToken}`).send(postBody);
+            const res = await chai.request(server).post("/api/v2/blog").set("authorization", `Bearer ${userAuthToken}`).send(postBody);
             
             expect(res.status).to.equal(403);
             expect(res.body).to.have.property("error");
@@ -165,21 +165,21 @@ describe("Testing Blog Endpoints", () => {
     });
     describe("Testing GET BLOGPOST BY ID", () => {
         it("should return an error if id is invalid", async function(){
-            const res = await chai.request(server).get(`/api/v2/blogs/64744rjh8h4u4hrfj88h4ur`);
+            const res = await chai.request(server).get(`/api/v2/blog/64744rjh8h4u4hrfj88h4ur`);
             expect(res.status).to.equal(400);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Invalid data format (Cast Error)");
         });
         it("should return an error if no post with given id exists", async function(){
             const postId = new ObjectId("663b2d3a4b36b9e3d35614fd");
-            const res = await chai.request(server).get(`/api/v2/blogs/${postId}`);
+            const res = await chai.request(server).get(`/api/v2/blog/${postId}`);
             expect(res.status).to.equal(404);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal(`No post with id ${postId}`);
         });
 
         it("should return post with valid id", async function(){
-            const res = await chai.request(server).get(`/api/v2/blogs/${blogPostId}`);
+            const res = await chai.request(server).get(`/api/v2/blog/${blogPostId}`);
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("data").which.is.an("object");
             expect(res.body).to.have.property("totalLikes").which.is.a("number");
@@ -194,31 +194,31 @@ describe("Testing Blog Endpoints", () => {
         };
 
         it("should return authentication error if authentication token is not provided", async function(){
-            const res = await chai.request(server).patch(`/api/v2/blogs/${blogPostId}`).send(updateBody);
+            const res = await chai.request(server).patch(`/api/v2/blog/${blogPostId}`).send(updateBody);
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("No authentication token provided");
         });
         it("should return authentication error if authentication token is not valid", async function(){
-            const res = await chai.request(server).patch(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer 5463g3gt7483yrgr748h`).send(updateBody);
+            const res = await chai.request(server).patch(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer 5463g3gt7483yrgr748h`).send(updateBody);
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Invalid authentication");
         });
         it("should return authorisation error if user does not have access previlege", async function(){
-            const res = await chai.request(server).patch(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer ${userAuthToken}`).send(updateBody);
+            const res = await chai.request(server).patch(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer ${userAuthToken}`).send(updateBody);
             expect(res.status).to.equal(403);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Unauthorized for this action");
         });
         it("should return error if update body is not provided", async function(){
-            const res = await chai.request(server).patch(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`).send({});
+            const res = await chai.request(server).patch(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`).send({});
             expect(res.status).to.equal(400);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("no title or body or author was passed in for update");
         });
         it("should update blog post with update body, valid authentication and access role provided", async function(){
-            const res = await chai.request(server).patch(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`).send(updateBody);
+            const res = await chai.request(server).patch(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`).send(updateBody);
             expect(res.status).to.equal(201);
             expect(res.body).to.have.property("editedPost");
             expect(res.body.editedPost).to.have.property("title");
@@ -234,7 +234,7 @@ describe("Testing Blog Endpoints", () => {
 
     describe("Post Like/Unlike Functional Tests", function () {
         it("should like a post", async function () {
-            const res = await chai.request(server).post(`/api/v2/blogs/${blogPostId}/likes`).set("Authorization", `Bearer ${userAuthToken}`);
+            const res = await chai.request(server).post(`/api/v2/blog/${blogPostId}/likes`).set("Authorization", `Bearer ${userAuthToken}`);
      
             expect(res.status).to.equal(201);
             expect(res.body).to.have.property("message", "successfully liked post");
@@ -242,7 +242,7 @@ describe("Testing Blog Endpoints", () => {
         });
     
         it("should unlike a post", async function () {
-            const res = await chai.request(server).delete(`/api/v2/blogs/${blogPostId}/likes`).set("Authorization", `Bearer ${userAuthToken}`);
+            const res = await chai.request(server).delete(`/api/v2/blog/${blogPostId}/likes`).set("Authorization", `Bearer ${userAuthToken}`);
 
             expect(res.status).to.equal(200);
             expect(res.body).to.have.property("message", "Successfully unliked post");
@@ -250,21 +250,21 @@ describe("Testing Blog Endpoints", () => {
         });
 
         it("should return authentication error if authentication token is not provided", async function(){
-            const res = await chai.request(server).post(`/api/v2/blogs/${blogPostId}/likes`);
+            const res = await chai.request(server).post(`/api/v2/blog/${blogPostId}/likes`);
             
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("No authentication token provided");
         });
         it("should return authentication error if authentication token is not valid", async function(){
-            const res = await chai.request(server).post(`/api/v2/blogs/${blogPostId}/likes`).set("authorization", `Bearer 5463g3gt7483yrgr748h`);
+            const res = await chai.request(server).post(`/api/v2/blog/${blogPostId}/likes`).set("authorization", `Bearer 5463g3gt7483yrgr748h`);
             
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Invalid authentication");
         });
         it("should return error when liking an inexistent blog post", async function(){
-            const res = await chai.request(server).post('/api/v2/blogs/609bda561a4f4a3b88b29cd1/likes').set("authorization", `Bearer ${userAuthToken}`);
+            const res = await chai.request(server).post('/api/v2/blog/609bda561a4f4a3b88b29cd1/likes').set("authorization", `Bearer ${userAuthToken}`);
 
             expect(res.status).to.equal(404);
             expect(res.body).to.have.property("error", "The blog post you attempted to like does not exist");
@@ -273,26 +273,26 @@ describe("Testing Blog Endpoints", () => {
 
     describe("Testing DELETE BLOGPOST BY ID", () => {
         it("should return authentication error if authentication token is not provided", async function(){
-            const res = await chai.request(server).delete(`/api/v2/blogs/${blogPostId}`);
+            const res = await chai.request(server).delete(`/api/v2/blog/${blogPostId}`);
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("No authentication token provided");
 
         });
         it("should return authentication error if authentication token is not valid", async function(){
-            const res = await chai.request(server).delete(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer 5463g3gt7483yrgr748h`)
+            const res = await chai.request(server).delete(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer 5463g3gt7483yrgr748h`)
             expect(res.status).to.equal(401);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Invalid authentication");
         });
         it("should return authorisation error if user does not have access previlege", async function(){
-            const res = await chai.request(server).delete(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer ${userAuthToken}`);
+            const res = await chai.request(server).delete(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer ${userAuthToken}`);
             expect(res.status).to.equal(403);
             expect(res.body).to.have.property("error");
             expect(res.body.error).to.equal("Unauthorized for this action");
         });
         it("should delete blog post with valid authentication and access role provided", async function(){
-            const res = await chai.request(server).delete(`/api/v2/blogs/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`);
+            const res = await chai.request(server).delete(`/api/v2/blog/${blogPostId}`).set("authorization", `Bearer ${adminAuthToken}`);
             expect(res.status).to.equal(201);
             expect(res.body).to.have.property("deletedPost").which.is.an("object");
             expect(res.body).to.have.property("deletedComments").which.is.an("object");

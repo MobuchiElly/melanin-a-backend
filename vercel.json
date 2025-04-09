@@ -5,17 +5,5 @@
             "source": "/(.*)",
             "destination": "api"
         }
-    ],
-    "builds": [
-        {
-            "src": "package.json",
-            "use": "@vercel/node",
-            "config": {
-            "maxLambdaSize": "50mb"
-            }
-        }
-    ],
-    "scripts": {
-    "buildCommand": "npm install && npm run test && npm run build"
-    }
+    ]
 }

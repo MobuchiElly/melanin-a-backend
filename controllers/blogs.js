@@ -103,8 +103,10 @@ const getPost = async (req, res) => {
 
   const totalLikes = singlePost.likes.length;
   const isLiked = uid ?  singlePost.likes.includes(uid) : false;
-
+   
   const data = singlePost.toObject();
+  const approvedComments = data.comments.filter(comment => comment.approved === true);
+  data.comments = approvedComments;
   delete data.likes;
   res.status(200).json({data, totalLikes, isLiked});
 };

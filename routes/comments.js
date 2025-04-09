@@ -10,7 +10,7 @@ const adminmiddleware = require('../middleware/adminmiddleware');
 const authmiddleware = require('../middleware/authmiddleware');
 
 const router = express.Router();
-//Remember to ensure user cannot access comments that are not approved on the backend. Future update
+
 router.route('/').get(authmiddleware, adminmiddleware, getComments);
 router.route('/:postId').post(authmiddleware, createComment);
 router.route('/:commentId').get(authmiddleware, adminmiddleware, getComment).delete(authmiddleware, adminmiddleware, deleteComment).patch(authmiddleware, editComment);

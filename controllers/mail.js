@@ -28,10 +28,11 @@ const sendMail = async(req, res) => {
     };
     try{
         const emailResponse = await mg.messages.create(DOMAIN, messageData);
-        res.status(200).json('email sent successfully')
+        return res.status(200).json('email sent successfully')
     } catch(err){
-        console.error(err);
-        res.status(400).json({ error: err }); 
+        console.error(err.status);
+        console.log(err.details)
+        res.status(err.status).json({ error: err.details });
     }
 }
 

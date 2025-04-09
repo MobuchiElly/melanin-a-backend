@@ -86,7 +86,7 @@ const getAllPosts = async (req, res) => {
     };
     const totalQueryPosts = await Post.countDocuments(queryObj);
     const totalPages = Math.ceil(totalQueryPosts/limit);
-    res.status(200).json({data:posts, totalPages});
+    res.status(200).json({data:posts});
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { UnauthenticatedError, BadRequestError } = require("../errors");
+const { UnauthenticatedError} = require("../errors");
 const jwt = require('jsonwebtoken');
 
 const authmiddleware = async(req, res, next) => {
@@ -15,7 +15,7 @@ const authmiddleware = async(req, res, next) => {
             userId:payload.userId,
             email:payload.email,
             role:payload.role
-        }        
+        }  
     } catch(err){
         throw new UnauthenticatedError('Invalid authentication');
     }

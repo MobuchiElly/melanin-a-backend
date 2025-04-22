@@ -3,8 +3,6 @@ const FormData = require("form-data");
 const { BadRequestError } = require("../errors");
 require("dotenv").config();
 
-const API_KEY = process.env.MAILGUN_API_KEY || "";
-const DOMAIN = process.env.MAILGUN_DOMAIN || "";
 
 const sendMail = async(req, res) => {
     const { email } = req.body;

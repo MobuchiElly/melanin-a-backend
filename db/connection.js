@@ -13,7 +13,7 @@ const uri = process.env.MONGO_URI;
 
 const dbConnect = async () => {
   try {
-    const conn = await mongoose.connect(uri);
+    const conn = await mongoose.connect(uri).then(() => {console.log("Connected to DB")});
   } catch (err) {
     console.log(err);
   }

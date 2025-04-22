@@ -31,7 +31,7 @@ app.use(NotFound);
 const PORT = process.env.PORT || 5000;
 const startup = async () => {
   try {
-    await connectDb().then(console.log("Connected to DB"));
+    await connectDb();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });

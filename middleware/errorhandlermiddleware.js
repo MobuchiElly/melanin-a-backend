@@ -10,7 +10,11 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     if (err.name == 'CastError'){
       return res.status(400).json({error: 'Invalid data format (Cast Error)'});
     }
-    return res.status(500).json({error: "Something went wrong, please try again later" + err});
+    
+    console.log("err code in errorhandlermiddleware: ", err.name);
+    
+    if(err.name == 'MongooseError') return res.status(503).json({error: "Database service unavailable. Restart your connection and try again"});
+    return res.status(500).json({error: "Error occurred. " + err});
 };
 
 module.exports = errorHandlerMiddleware;

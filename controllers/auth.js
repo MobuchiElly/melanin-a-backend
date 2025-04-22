@@ -11,9 +11,8 @@ const tokenGenerator = require("../utils/generate_tokens");
 const emailSender = require("../utils/emailSender");
 
 
-NODE_ENV="development";       //dev check
-const redirect_url = NODE_ENV === "development" ? process.env.REDIRECT_URL : process.env.REDIRECT_URL_PROD;
-const password_reset_url = NODE_ENV === "development" ? process.env.PASSW_REDIRECT_URL : process.env.PASSW_REDIRECT_URL_PROD;
+const redirect_url = process.env.REDIRECT_URL_PROD;
+const password_reset_url = process.env.PASSW_REDIRECT_URL_PROD;
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;

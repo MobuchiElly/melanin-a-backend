@@ -23,7 +23,7 @@ async function mailSender(to, subject, html){
         });
         await Transporter.sendMail(mailOptions);
     } catch (err){
-        throw new BadRequestError("Failed to send email");
+        throw new BadRequestError("Unable to send verification email. Kindly provide a valid email");
     }
 }
 

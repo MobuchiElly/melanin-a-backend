@@ -1,19 +1,18 @@
+const { MongoMemoryServer } = require("mongodb-memory-server");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const uri = process.env.MONGO_URI;
-// if (!uri){
-//   throw new Error('Please define the MONGO_URI variable in the env file');
-// }
-// let cached = global.mongoose;
-
-// if(!cached){
-
-// }
 
 const dbConnect = async () => {
   try {
-    const conn = await mongoose.connect(uri).then(() => {console.log("Connected to DB")});
+    if (process.env.NODE_ENV === "test"){
+      const mongoServer = await MongoMemoryServer.create();
+      const uri = mongoServer.getUri();
+      await mongoose.connect(uri).then(() => console.log("Connected to Test Db"));
+    } else {
+      const uri = process.env.MONGO_URI;
+      await mongoose.connect(uri).then(() => {console.log("Connected to DB")});
+    }
   } catch (err) {
     console.log(err);
   }

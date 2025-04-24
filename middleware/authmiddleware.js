@@ -3,11 +3,8 @@ const { UnauthenticatedError} = require("../errors");
 const jwt = require('jsonwebtoken');
 
 const authmiddleware = async(req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if(!authHeader || !authHeader.startsWith('Bearer ')){
-        throw new UnauthenticatedError('No authentication token provided')
-    }
-    const token = authHeader.split(' ')[1];
+    const token = req.cookies.token || null;
+    if (!token) throw new UnauthenticatedError("No authentication token provided");
     try{
         const payload = jwt.verify(token, process.env.JWT_SECRET);
         req.user = {

@@ -14,17 +14,24 @@ const emailSender = require("../utils/emailSender");
 const redirect_url = process.env.REDIRECT_URL_PROD;
 const password_reset_url = process.env.PASSW_REDIRECT_URL_PROD;
 
+
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !password || !email) throw new BadRequestError("Name, Email and Password are required");
 
   const [ verificationToken, hashedVerificationToken, verificationTokenExpires ] = await tokenGenerator();
+  let dbVerificationToken;
+  if (process.env.NODE_ENV === "test"){
+    dbVerificationToken = verificationToken;
+  } else {
+    dbVerificationToken = hashedVerificationToken;
+  }
   const user = await Users.create({
     name,
     email,
     password,
-    verificationToken:hashedVerificationToken,
+    verificationToken: dbVerificationToken,
     verificationTokenExpires
   });
   await emailSender(email, redirect_url, verificationToken);
@@ -56,6 +63,12 @@ const verifyEmail = async (req, res) => {
   await user.save();
 
   const authToken = await user.createJWT();
+  res.cookie("token", token, {
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+    sameSite: "None",
+    expires: new Date(Date.now() + 3600000)
+  })
   return res
     .status(200)
     .json({
@@ -63,9 +76,8 @@ const verifyEmail = async (req, res) => {
         name: user.name,
         email: user.email,
         uid: user._id,
-        status: user.role == "admin" ? user.role : null,
-      },
-      token: authToken,
+        status: user.role == "admin" ? user.role : null
+      }
     });
 };
 
@@ -99,7 +111,6 @@ const login = async (req, res) => {
       "User does not exist. Please enter correct login credentials"
     );
   };
-
   if (!user.isVerifiedUser && user.email !== process.env.AUTHEMAIL) {
     const [ verificationToken, hashedVerificationToken, verificationTokenExpires ] = await tokenGenerator();
   
@@ -121,15 +132,14 @@ const login = async (req, res) => {
       email: user.email,
       uid: user._id,
       status: user.role === "admin" ? user.role : null,
-    },
-    token,
+    }
   };
-  // res.cookie("token", token, {
-  //   secure: true,
-  //   httpOnly: true,
-  //   sameSite: "Strict",
-  //   expires: new Date(Date.now() + 3600000)
-  // });
+  res.cookie("token", token, {
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+    sameSite: "None",
+    expires: new Date(Date.now() + 3600000)
+  });
   return res.status(200).json(userRes);
 };
 

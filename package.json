@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "mocha '__tests__/**/*.test.js' --timeout 100000",
+    "test": "mocha '__tests__/**/*.test.js' --watch --timeout 100000",
     "vercel-build": "echo hello"
   },
   "author": "Buchi",
@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cloudinary": "^2.2.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
@@ -27,7 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "mailgun.js": "^10.2.1",
     "mongodb": "^6.5.0",
-    "mongoose": "^8.2.3",
+    "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.1",
     "nodemon": "^3.1.0",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^8.4.0"
+    "mocha": "^8.4.0",
+    "mongodb-memory-server": "^10.1.4"
   }
 }

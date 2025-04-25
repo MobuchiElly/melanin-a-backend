@@ -1,8 +1,8 @@
 const express = require("express");
-const sendMail = require("../controllers/mail");
+const subscribe = require("../controllers/subscription");
 
 const router = express.Router();
 
-router.post("/", sendMail);
+router.post("/subscribe", subscribe);
 
 module.exports = router;

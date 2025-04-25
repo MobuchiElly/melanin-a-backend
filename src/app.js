@@ -25,7 +25,7 @@ app.use(express.static("./public"));
 app.use("/api/v2/auth", authRouter);
 app.use("/api/v2/blog", blogRouter);
 app.use("/api/v2/comments", authmiddleware, commentRouter);
-app.use("/api/v2/mail", mailRouter);
+app.use("/api/v2", mailRouter);
 
 
 app.use(errorHandlerMiddleware);

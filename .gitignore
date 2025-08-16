@@ -1,5 +1,6 @@
 *.env
 .vercel
+*.txt
 /node_modules
 /__tests__/integration
 /__tests__/unit

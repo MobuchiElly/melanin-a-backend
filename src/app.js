@@ -11,6 +11,8 @@ const cors = require("cors");
 const NotFound = require("./middleware/Not-found");
 const errorHandlerMiddleware = require("./middleware/errorhandlermiddleware");
 const cookieParser = require("cookie-parser");
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('../swagger');
 
 const app = express();
 
@@ -22,15 +24,20 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+
+//swagger middleware 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+//API ROUTES
 app.use(express.static("./public"));
 app.use("/api/v2/auth", authRouter);
 app.use("/api/v2/blog", blogRouter);
 app.use("/api/v2/comments", authmiddleware, commentRouter);
 app.use("/api/v2", mailRouter);
 
+//
 app.use(NotFound);
 app.use(errorHandlerMiddleware);
-
 
 const PORT = process.env.PORT || 5000;
 const startup = async () => {
@@ -39,11 +46,6 @@ const startup = async () => {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-    // if (process.env.NODE_ENV !== "test") {
-    //   app.listen(PORT, () => {
-    //     console.log(`Server running on port ${PORT}`);
-    //   });
-    // }
   } catch (err) {
     console.error("DB Connection Error:", err);
   }

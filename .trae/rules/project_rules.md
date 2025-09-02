@@ -1,0 +1,12 @@
+This is a rest api for a blog application. It has the following features:
+- User authentication
+- CRUD operations for blog posts
+- Commenting on blog posts
+- Liking blog posts
+- User profiles
+- Search functionality
+- Pagination
+- Error handling
+- Documentation
+- Testing
+- Deployment

@@ -59,7 +59,7 @@ const verifyEmailService = async ({ email, verificationToken }) => {
         name: user.name,
         email: user.email,
         uid: user._id,
-        status: user.role == "admin" ? user.role : null,
+        status: null
       },
     },
   };

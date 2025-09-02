@@ -9,7 +9,7 @@ const {
   deletePost,
   addLike,
   deleteLike,
-} = require("../controllers/blogs");
+} = require("../controllers/post");
 const router = express.Router();
 
 /**
@@ -85,52 +85,52 @@ const router = express.Router();
  *           enum: [createdAt, updatedAt]
  *       - in: query
  *         name: title
- *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: tags
- *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: search
- *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: featured
- *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
  *         name: author
- *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: startDate
- *         required: false
  *         schema:
  *           type: string
  *           format: date
  *       - in: query
  *         name: endDate
- *         required: false
  *         schema:
  *           type: string
  *           format: date
  *       - in: query
  *         name: select
- *         required: false
  *         schema:
  *           type: string
  *           example: title,author
  *       - in: query
  *         name: page
- *         required: false
  *         schema:
  *           type: integer
+ *     responses:
+ *       200:
+ *         description: List of blog posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
  *   post:
  *     summary: Create a new blog post
  *     tags: [Posts]

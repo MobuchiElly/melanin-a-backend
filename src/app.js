@@ -2,7 +2,7 @@ require("dotenv").config();
 const connectDb = require("./config/db");
 require("express-async-errors");
 const express = require("express");
-const blogRouter = require("./routes/blogs");
+const blogPostsRouter = require("./routes/posts");
 const authRouter = require("./routes/auth");
 const commentRouter = require("./routes/comments");
 const mailRouter = require("./routes/mail");
@@ -31,11 +31,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //API ROUTES
 app.use(express.static("./public"));
 app.use("/api/v2/auth", authRouter);
-app.use("/api/v2/blog", blogRouter);
+app.use("/api/v2/posts", blogPostsRouter);
 app.use("/api/v2/comments", authmiddleware, commentRouter);
 app.use("/api/v2", mailRouter);
 
-//
 app.use(NotFound);
 app.use(errorHandlerMiddleware);
 

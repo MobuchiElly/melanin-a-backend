@@ -25,7 +25,7 @@ const options = {
         ],
         servers: [
             {
-                url: process.env.NODE_ENV === "production" ? "https://melanin-a-backend.vercel.app/api/v2" : "http://localhost:5000/api/v2"
+                url: process.env.NODE_ENV === "production" ? "https://melanin-a-backend.onrender.com/api/v2" : "http://localhost:5000/api/v2"
             }
         ],
         components: {

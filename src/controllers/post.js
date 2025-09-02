@@ -7,7 +7,7 @@ const {
   deletePostService,
   addLikeService,
   deleteLikeService
-} = require("../services/blog-service");
+} = require("../services/blog-post-service");
 
 
 

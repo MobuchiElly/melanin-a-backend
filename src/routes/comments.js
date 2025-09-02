@@ -147,6 +147,8 @@ router.route("/:postId").post(authmiddleware, createComment);
 router.route("/:commentId").get(authmiddleware, adminmiddleware, getComment);
 
 /**
+ * @swagger
+ * /comments/{commentId}
  *   patch:
  *     summary: Edit a comment (owner only)
  *     tags: [Comments]
@@ -171,6 +173,8 @@ router.route("/:commentId").get(authmiddleware, adminmiddleware, getComment);
 router.route("/:commentId").patch(authmiddleware, editComment);
 
 /**
+ * @swagger
+ * /comments/{commentId}:
  *   delete:
  *     summary: Delete a comment
  *     tags: [Comments]

@@ -82,9 +82,7 @@ const getAllPostsService = async({ sort, title, tags, search, featured, author, 
 
     const posts = await postsQuery.populate("comments").skip(skip).limit(limit).exec();
     const totalQueryPosts = await Post.countDocuments(queryObj);
-    console.log("total:", totalQueryPosts);
     const totalPages = Math.ceil(totalQueryPosts/limit);
-
     return {posts: posts || [], totalPages};
 };
 
